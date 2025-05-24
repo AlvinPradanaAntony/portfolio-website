@@ -140,10 +140,8 @@ export default function HomePage() {
         {/* Glassmorphism overlay */}
         <div className="absolute inset-0 glass-bg" />
       </div>
-
       {/* Navigation */}
       <Navbar />
-
       {/* Hero Section */}
       <section className="hero-section relative h-screen flex items-center justify-center overflow-hidden">
         {/* Hero-specific animated background */}
@@ -224,9 +222,10 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           <div className="hero-content">
+            {" "}
             {/* Main Heading with advanced animated typography */}
             <div className="mb-8">
-              <h1 className="hero-title text-6xl md:text-8xl font-bold mb-6 opacity-0 perspective-1000">
+              <h1 className="hero-title responsive-text-6xl font-bold mb-6 opacity-0 perspective-1000">
                 <motion.span className="gradient-text inline-block" initial={{ rotateX: 90, opacity: 0 }} animate={{ rotateX: 0, opacity: 1 }} transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }} style={{ transformOrigin: "center bottom" }}>
                   Creative
                 </motion.span>
@@ -237,18 +236,17 @@ export default function HomePage() {
               </h1>
 
               {/* Animated typewriter effect */}
-              <motion.p className="hero-subtitle text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 opacity-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.5 }}>
+              <motion.p className="hero-subtitle responsive-text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 opacity-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.5 }}>
                 <motion.span initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.8, ease: "easeInOut" }} className="inline-block overflow-hidden whitespace-nowrap border-r-2 border-primary/60" style={{ borderRight: "2px solid" }}>
                   Crafting exceptional digital experiences with modern technologies
                 </motion.span>
               </motion.p>
 
               {/* Simple description animation */}
-              <motion.div className="hero-description text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed opacity-0" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}>
+              <motion.div className="hero-description responsive-text-lg text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed opacity-0" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}>
                 Innovative design, and cutting-edge development practices.
               </motion.div>
             </div>
-
             {/* CTA Buttons with stagger animation */}
             <div className="hero-buttons flex flex-col sm:flex-row gap-4 justify-center mb-12 opacity-0">
               <Button variant="gradient" size="xl" className="group transform hover:scale-105 transition-all duration-300" asChild>
@@ -262,7 +260,6 @@ export default function HomePage() {
                 Download Resume
               </Button>
             </div>
-
             {/* Social Links with smooth hover effects */}
             <div className="hero-social flex justify-center gap-4 opacity-0">
               <Button variant="glass" size="icon" className="hover-glow transform hover:scale-110 transition-all duration-300">
@@ -285,7 +282,6 @@ export default function HomePage() {
           </motion.div>
         </motion.div>
       </section>
-
       {/* About Section Preview */}
       <section className="py-20 px-6 relative" id="about">
         {/* Enhanced Decorative 3D Elements */}
@@ -378,6 +374,7 @@ export default function HomePage() {
                 {/* Large Photo Card */}
                 <div className="relative rounded-3xl overflow-hidden shadow-lg">
                   <div className="relative overflow-hidden">
+                    {" "}
                     <div className="aspect-[4/5]">
                       {/* Real photo from Unsplash */}
                       <img src="https://images.unsplash.com/photo-1531891437562-4301cf35b7e4" alt="Professional developer portrait" className="w-full h-full object-cover" />
@@ -504,77 +501,73 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
       {/* Skills Section */}
       <SkillsSection />
-
       {/* Projects Section */}
       <ProjectsSection />
-
       {/* Blog Section */}
       <BlogSection />
-
       {/* Contact Section */}
-      <ContactSection />
+      <ContactSection /> {/* Footer */}
+      <footer className="py-12 px-6 border-t border-border/50 relative bg-muted/20 backdrop-blur-sm">
+        {/* Footer Background */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/60 to-transparent" />
 
-      {/* Footer */}
-      <footer className="py-12 px-6 border-t relative">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
-              <h3 className="text-2xl font-bold gradient-text mb-4">Portfolio</h3>
-              <p className="text-muted-foreground mb-4">Creating exceptional digital experiences with modern technologies and innovative design.</p>
-              <div className="flex gap-4">
-                <Button variant="ghost" size="icon">
+              <h3 className="responsive-text-2xl font-bold gradient-text mb-4">Portfolio</h3>
+              <p className="responsive-text-base text-muted-foreground mb-6 leading-relaxed">Creating exceptional digital experiences with modern technologies and innovative design.</p>
+              <div className="flex gap-3">
+                <Button variant="glass" size="icon" className="hover-glow transition-all duration-300">
                   <Github className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon">
+                <Button variant="glass" size="icon" className="hover-glow transition-all duration-300">
                   <Linkedin className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon">
+                <Button variant="glass" size="icon" className="hover-glow transition-all duration-300">
                   <Mail className="h-5 w-5" />
                 </Button>
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                <a href="#about" className="block text-muted-foreground hover:text-foreground transition-colors">
+              <h4 className="responsive-text-lg font-semibold mb-4 text-foreground">Quick Links</h4>
+              <div className="space-y-3">
+                <a href="#about" className="block responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1">
                   About
                 </a>
-                <a href="#skills" className="block text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#skills" className="block responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1">
                   Skills
                 </a>
-                <a href="#projects" className="block text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#projects" className="block responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1">
                   Projects
                 </a>
-                <a href="#blog" className="block text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#blog" className="block responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1">
                   Blog
                 </a>
-                <a href="#contact" className="block text-muted-foreground hover:text-foreground transition-colors">
+                <a href="#contact" className="block responsive-text-sm text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1">
                   Contact
                 </a>
               </div>
             </div>
 
             <div>
-              <h4 className="font-semibold mb-4">Services</h4>
-              <div className="space-y-2">
-                <p className="text-muted-foreground">Web Development</p>
-                <p className="text-muted-foreground">Mobile Apps</p>
-                <p className="text-muted-foreground">UI/UX Design</p>
-                <p className="text-muted-foreground">Consulting</p>
+              <h4 className="responsive-text-lg font-semibold mb-4 text-foreground">Services</h4>
+              <div className="space-y-3">
+                <p className="responsive-text-sm text-muted-foreground">Web Development</p>
+                <p className="responsive-text-sm text-muted-foreground">Mobile Apps</p>
+                <p className="responsive-text-sm text-muted-foreground">UI/UX Design</p>
+                <p className="responsive-text-sm text-muted-foreground">Consulting</p>
               </div>
             </div>
           </div>
 
-          <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-            <p>&copy; 2024 Portfolio. All rights reserved.</p>
+          <div className="border-t border-border/50 mt-8 pt-8 text-center">
+            <p className="responsive-text-sm text-muted-foreground">&copy; 2024 Portfolio. All rights reserved. Crafted with ❤️ and modern tech.</p>
           </div>
         </div>
       </footer>
-
       {/* Scroll to Top Button */}
       <motion.button className="fixed bottom-8 right-8 glass-card p-3 rounded-full shadow-lg z-40" initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         <ArrowUp className="h-5 w-5" />

@@ -120,16 +120,15 @@ export function ContactSection() {
           viewport={{ once: true }}
           variants={motionVariants.container}
           className="text-center mb-16"
-        >
-          <motion.h2 
+        >          <motion.h2 
             variants={motionVariants.item}
-            className="text-4xl md:text-5xl font-bold mb-6 gradient-text"
+            className="responsive-text-4xl font-bold mb-6 gradient-text"
           >
             Let&apos;s Work Together
           </motion.h2>
           <motion.p 
             variants={motionVariants.item}
-            className="text-xl text-muted-foreground max-w-3xl mx-auto"
+            className="responsive-text-xl text-muted-foreground max-w-3xl mx-auto"
           >
             Ready to bring your ideas to life? I&apos;d love to hear about your project 
             and discuss how we can create something amazing together.
@@ -143,9 +142,8 @@ export function ContactSection() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={motionVariants.fadeLeft}
-          >
-            <GlassCard className="p-8">
-              <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
+          >            <GlassCard className="p-6 lg:p-8">
+              <h3 className="responsive-text-2xl font-bold mb-6">Send a Message</h3>
               
               {submitStatus === "success" && (
                 <motion.div
@@ -174,30 +172,28 @@ export function ContactSection() {
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
                       Name *
-                    </label>
-                    <input
+                    </label>                    <input
                       type="text"
                       id="name"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                      className="form-input"
                       placeholder="Your name"
                     />
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
                       Email *
-                    </label>
-                    <input
+                    </label>                    <input
                       type="email"
                       id="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 rounded-lg border bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                      className="form-input"
                       placeholder="your@email.com"
                     />
                   </div>
@@ -206,15 +202,14 @@ export function ContactSection() {
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium mb-2">
                     Subject *
-                  </label>
-                  <input
+                  </label>                  <input
                     type="text"
                     id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 rounded-lg border bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300"
+                    className="form-input"
                     placeholder="What's this about?"
                   />
                 </div>
@@ -222,15 +217,14 @@ export function ContactSection() {
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
                     Message *
-                  </label>
-                  <textarea
+                  </label>                  <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-3 rounded-lg border bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300 resize-none"
+                    className="form-input resize-none"
                     placeholder="Tell me about your project..."
                   />
                 </div>
@@ -265,10 +259,9 @@ export function ContactSection() {
             viewport={{ once: true }}
             variants={motionVariants.fadeRight}
             className="space-y-8"
-          >
-            <div>
-              <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
-              <p className="text-muted-foreground mb-8">
+          >            <div>
+              <h3 className="responsive-text-2xl font-bold mb-6">Get in Touch</h3>
+              <p className="responsive-text-base text-muted-foreground mb-8">
                 I&apos;m always open to discussing new opportunities, creative projects, 
                 or just having a friendly chat about technology and design.
               </p>
@@ -297,11 +290,9 @@ export function ContactSection() {
                   </div>
                 </motion.a>
               ))}
-            </div>
-
-            {/* Social Links */}
+            </div>            {/* Social Links */}
             <div>
-              <h4 className="font-semibold mb-4">Follow Me</h4>
+              <h4 className="responsive-text-lg font-semibold mb-4">Follow Me</h4>
               <div className="flex gap-4">
                 {socialLinks.map((social, index) => (
                   <motion.a
