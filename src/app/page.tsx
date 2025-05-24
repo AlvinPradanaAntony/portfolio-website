@@ -32,27 +32,99 @@ export default function HomePage() {
     // Register GSAP plugins
     gsap.registerPlugin(ScrollTrigger);
     
+    let isMouseInViewport = false;
+    
+    // Mouse tracking for 3D effects - only when mouse is in viewport
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isMouseInViewport) return;
+      
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      const xPercent = (clientX / innerWidth - 0.5) * 2;
+      const yPercent = (clientY / innerHeight - 0.5) * 2;
+      
+      // Apply smooth 3D transforms to floating elements
+      gsap.to(".floating-element-1", {
+        duration: 1.5,
+        rotationY: xPercent * 8,
+        rotationX: yPercent * 8,
+        x: xPercent * 15,
+        y: yPercent * 15,
+        ease: "power1.out"
+      });
+      
+      gsap.to(".floating-element-2", {
+        duration: 1.8,
+        rotationY: xPercent * -6,
+        rotationX: yPercent * -6,
+        x: xPercent * -12,
+        y: yPercent * -12,
+        ease: "power1.out"
+      });
+      
+      gsap.to(".floating-element-3", {
+        duration: 1.2,
+        rotationY: xPercent * 10,
+        rotationX: yPercent * 10,
+        x: xPercent * 18,
+        y: yPercent * 18,
+        ease: "power1.out"
+      });
+      
+      // Apply subtle parallax to hero content
+      gsap.to(".hero-content", {
+        duration: 2,
+        rotationY: xPercent * 1,
+        rotationX: yPercent * 1,
+        ease: "power1.out"
+      });
+    };
+    
+    // Mouse enter/leave viewport detection
+    const handleMouseEnter = () => {
+      isMouseInViewport = true;
+    };
+    
+    const handleMouseLeave = () => {
+      isMouseInViewport = false;
+      // Reset all transforms smoothly when mouse leaves
+      gsap.to([".floating-element-1", ".floating-element-2", ".floating-element-3", ".hero-content"], {
+        duration: 2,
+        rotationY: 0,
+        rotationX: 0,
+        x: 0,
+        y: 0,
+        ease: "power2.out"
+      });
+    };
+    
+    // Add event listeners
+    window.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
+    
     // Initialize GSAP animations after component mounts with smoother timing
     const tl = gsap.timeline({ delay: 0.2 });
     
     // Smooth hero content animation
-    tl.fromTo(".hero-title", 
+    tl.fromTo(".hero-title",
       { opacity: 0, y: 100, scale: 0.8 },
-      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" }
+      { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "back.out(1.7)" }
     )
-    .fromTo(".hero-subtitle", 
+    .fromTo(".hero-subtitle",
       { opacity: 0, y: 50 },
       { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, "-=0.8"
     )
-    .fromTo(".hero-description", 
+    .fromTo(".hero-description",
       { opacity: 0, y: 30 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.6"
     )
-    .fromTo(".hero-buttons", 
+    .fromTo(".hero-buttons",
       { opacity: 0, y: 40 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.4"
     )
-    .fromTo(".hero-social", 
+    .fromTo(".hero-social",
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.4"
     );
@@ -73,6 +145,14 @@ export default function HomePage() {
     //     scrub: true,
     //   },
     // });
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   return (
@@ -111,40 +191,153 @@ export default function HomePage() {
         {/* Additional hero background elements */}
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent dark:via-black/5" />
         
-        {/* Floating Elements with improved animations */}
-        <div className="absolute top-20 left-20 floating-element-1">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 opacity-20 blur-xl animate-pulse" />
-        </div>
-        <div className="absolute bottom-20 right-20 floating-element-2">
-          <div className="w-32 h-32 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-20 blur-xl animate-pulse" style={{ animationDelay: '1s' }} />
-        </div>
-        <div className="absolute top-1/2 left-10 floating-element-3">
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-600 opacity-20 blur-xl animate-pulse" style={{ animationDelay: '2s' }} />
-        </div>
+        {/* 3D Interactive Floating Elements */}
+        <motion.div
+          className="absolute top-20 left-20 floating-element-1"
+          initial={{ opacity: 0, scale: 0, rotateY: 180 }}
+          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+          transition={{ duration: 1.5, delay: 0.5 }}
+          whileHover={{
+            scale: 1.2,
+            rotateY: 180,
+            transition: { duration: 0.6 }
+          }}
+        >
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000"
+               style={{ transform: "rotateX(15deg) rotateY(15deg)" }} />
+        </motion.div>
         
-        {/* Additional floating particles */}
-        <div className="absolute top-1/3 right-1/4 floating-element-1">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-yellow-400 to-orange-500 opacity-30 blur-sm" />
-        </div>
-        <div className="absolute bottom-1/3 left-1/4 floating-element-2">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-400 to-pink-500 opacity-25 blur-md" />
-        </div>
+        <motion.div
+          className="absolute bottom-20 right-20 floating-element-2"
+          initial={{ opacity: 0, scale: 0, rotateX: 90 }}
+          animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+          transition={{ duration: 1.5, delay: 1 }}
+          whileHover={{
+            scale: 1.3,
+            rotateX: 360,
+            transition: { duration: 0.8 }
+          }}
+        >
+          <div className="w-32 h-32 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000"
+               style={{ transform: "rotateX(-15deg) rotateZ(15deg)" }} />
+        </motion.div>
+        
+        <motion.div
+          className="absolute top-1/2 left-10 floating-element-3"
+          initial={{ opacity: 0, scale: 0, rotateZ: 180 }}
+          animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
+          transition={{ duration: 1.5, delay: 1.5 }}
+          whileHover={{
+            scale: 1.1,
+            rotateZ: -180,
+            transition: { duration: 0.5 }
+          }}
+        >
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000"
+               style={{ transform: "rotateY(-15deg) rotateX(15deg)" }} />
+        </motion.div>
+        
+        {/* Interactive 3D Floating Cards */}
+        <motion.div
+          className="absolute top-1/3 right-1/4 floating-element-1"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 2, ease: "easeOut" }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <div className="w-24 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
+            <div className="p-2 text-xs text-white/80 font-medium">React</div>
+          </div>
+        </motion.div>
+        
+        <motion.div
+          className="absolute bottom-1/3 left-1/4 floating-element-2"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 2.3, ease: "easeOut" }}
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          <div className="w-20 h-14 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
+            <div className="p-2 text-xs text-white/80 font-medium">Next.js</div>
+          </div>
+        </motion.div>
+        
+        {/* Additional 3D Interactive Particles */}
+        <motion.div
+          className="absolute top-1/4 left-1/3 floating-element-3"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 2.6, ease: "easeOut" }}
+        >
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-400/25 to-cyan-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
+            <div className="p-1 text-xs text-white/80 font-medium">TS</div>
+          </div>
+        </motion.div>
+        
+        <motion.div
+          className="absolute bottom-1/4 right-1/3 floating-element-1"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 2.9, ease: "easeOut" }}
+        >
+          <div className="w-14 h-10 bg-gradient-to-br from-emerald-400/25 to-teal-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
+            <div className="p-1 text-xs text-white/80 font-medium">CSS</div>
+          </div>
+        </motion.div>
 
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           <div className="hero-content">
-            {/* Main Heading with improved animations */}
+            {/* Main Heading with advanced animated typography */}
             <div className="mb-8">
-              <h1 className="hero-title text-6xl md:text-8xl font-bold mb-6 opacity-0">
-                <span className="gradient-text inline-block">Creative</span>
+              <h1 className="hero-title text-6xl md:text-8xl font-bold mb-6 opacity-0 perspective-1000">
+                <motion.span
+                  className="gradient-text inline-block"
+                  initial={{ rotateX: 90, opacity: 0 }}
+                  animate={{ rotateX: 0, opacity: 1 }}
+                  transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }}
+                  style={{ transformOrigin: "center bottom" }}
+                >
+                  Creative
+                </motion.span>
                 <br />
-                <span className="text-foreground inline-block">Developer</span>
+                <motion.span
+                  className="text-foreground inline-block"
+                  initial={{ rotateX: -90, opacity: 0 }}
+                  animate={{ rotateX: 0, opacity: 1 }}
+                  transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }}
+                  style={{ transformOrigin: "center top" }}
+                >
+                  Developer
+                </motion.span>
               </h1>
-              <p className="hero-subtitle text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 opacity-0">
-                Crafting exceptional digital experiences with modern technologies
-              </p>
-              <p className="hero-description text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed opacity-0">
+              
+              {/* Animated typewriter effect */}
+              <motion.p
+                className="hero-subtitle text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 opacity-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 1.5 }}
+              >
+                <motion.span
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 2, delay: 1.8, ease: "easeInOut" }}
+                  className="inline-block overflow-hidden whitespace-nowrap border-r-2 border-primary/60"
+                  style={{ borderRight: "2px solid" }}
+                >
+                  Crafting exceptional digital experiences with modern technologies
+                </motion.span>
+              </motion.p>
+              
+              {/* Simple description animation */}
+              <motion.div
+                className="hero-description text-lg md:text-xl text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed opacity-0"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}
+              >
                 Innovative design, and cutting-edge development practices.
-              </p>
+              </motion.div>
             </div>
 
             {/* CTA Buttons with stagger animation */}
@@ -209,37 +402,159 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-              About Me
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Passionate full-stack developer with expertise in modern web technologies, 
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold mb-6 gradient-text perspective-1000"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              {["About", "Me"].map((word, index) => (
+                <motion.span
+                  key={index}
+                  className="inline-block mr-4"
+                  initial={{
+                    opacity: 0,
+                    rotateX: 90,
+                    y: 50
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    rotateX: 0,
+                    y: 0
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.2,
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 15
+                  }}
+                  viewport={{ once: true }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 10,
+                    transition: { duration: 0.3 }
+                  }}
+                  style={{ transformOrigin: "center bottom" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.h2>
+            
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              viewport={{ once: true }}
+            >
+              Passionate full-stack developer with expertise in modern web technologies,
               creating scalable applications and beautiful user experiences.
-            </p>
+            </motion.p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 perspective-1000">
             {[
-              { icon: Code2, title: "Frontend Development", desc: "React, Next.js, TypeScript" },
-              { icon: Database, title: "Backend Development", desc: "Node.js, Python, PostgreSQL" },
-              { icon: Palette, title: "UI/UX Design", desc: "Figma, Adobe Creative Suite" },
-              { icon: Smartphone, title: "Mobile Development", desc: "React Native, Flutter" },
-              { icon: Globe, title: "Web Technologies", desc: "HTML5, CSS3, JavaScript" },
-              { icon: Zap, title: "Performance", desc: "Optimization, SEO, Accessibility" },
+              { icon: Code2, title: "Frontend Development", desc: "React, Next.js, TypeScript", color: "from-blue-500 to-cyan-500" },
+              { icon: Database, title: "Backend Development", desc: "Node.js, Python, PostgreSQL", color: "from-green-500 to-emerald-500" },
+              { icon: Palette, title: "UI/UX Design", desc: "Figma, Adobe Creative Suite", color: "from-purple-500 to-pink-500" },
+              { icon: Smartphone, title: "Mobile Development", desc: "React Native, Flutter", color: "from-orange-500 to-red-500" },
+              { icon: Globe, title: "Web Technologies", desc: "HTML5, CSS3, JavaScript", color: "from-yellow-500 to-orange-500" },
+              { icon: Zap, title: "Performance", desc: "Optimization, SEO, Accessibility", color: "from-indigo-500 to-purple-500" },
             ].map((skill, index) => (
               <motion.div
                 key={skill.title}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+                initial={{
+                  opacity: 0,
+                  y: 50,
+                  rotateX: 45,
+                  rotateY: 45,
+                  scale: 0.8
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                  rotateX: 0,
+                  rotateY: 0,
+                  scale: 1
+                }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 15
+                }}
                 viewport={{ once: true }}
-                whileHover={{ y: -10 }}
+                whileHover={{
+                  y: -15,
+                  rotateX: 10,
+                  rotateY: 10,
+                  scale: 1.05,
+                  transition: { duration: 0.3 }
+                }}
+                style={{
+                  transformStyle: "preserve-3d",
+                  perspective: "1000px"
+                }}
+                className="group"
               >
-                <GlassCard className="p-6 text-center hover:bg-white/15 transition-all duration-300">
-                  <skill.icon className="h-12 w-12 mx-auto mb-4 text-primary" />
-                  <h3 className="text-xl font-semibold mb-2">{skill.title}</h3>
-                  <p className="text-muted-foreground">{skill.desc}</p>
-                </GlassCard>
+                <div className="relative">
+                  {/* 3D Card Shadow */}
+                  <div className="absolute inset-0 bg-gradient-to-br opacity-20 rounded-xl blur-xl transform translate-y-4 translate-x-4 group-hover:translate-y-6 group-hover:translate-x-6 transition-transform duration-300"
+                       style={{ background: `linear-gradient(135deg, var(--blue-500), var(--cyan-500))` }} />
+                  
+                  {/* Main 3D Card */}
+                  <GlassCard className="relative p-6 text-center hover:bg-white/15 transition-all duration-300 transform-gpu border-2 border-white/20 backdrop-blur-md">
+                    {/* Gradient Background Overlay */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${skill.color} opacity-5 rounded-xl group-hover:opacity-10 transition-opacity duration-300`} />
+                    
+                    {/* 3D Icon Container */}
+                    <motion.div
+                      className="relative z-10"
+                      whileHover={{
+                        rotateY: 360,
+                        scale: 1.2,
+                        transition: { duration: 0.6 }
+                      }}
+                    >
+                      <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${skill.color} p-3 shadow-2xl transform-gpu`}
+                           style={{ transform: "rotateX(10deg) rotateY(10deg)" }}>
+                        <skill.icon className="h-full w-full text-white" />
+                      </div>
+                    </motion.div>
+                    
+                    {/* 3D Text Content */}
+                    <div className="relative z-10">
+                      <motion.h3
+                        className="text-xl font-semibold mb-2"
+                        whileHover={{
+                          scale: 1.05,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        {skill.title}
+                      </motion.h3>
+                      <motion.p
+                        className="text-muted-foreground"
+                        whileHover={{
+                          scale: 1.02,
+                          transition: { duration: 0.2 }
+                        }}
+                      >
+                        {skill.desc}
+                      </motion.p>
+                    </div>
+                    
+                    {/* 3D Highlight Effect */}
+                    <div className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                         style={{
+                           background: `linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1))`,
+                           boxShadow: `0 20px 40px rgba(59, 130, 246, 0.2)`
+                         }} />
+                  </GlassCard>
+                </div>
               </motion.div>
             ))}
           </div>

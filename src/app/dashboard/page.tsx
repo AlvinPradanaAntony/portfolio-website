@@ -46,6 +46,7 @@ export default function DashboardPage() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [hasAnimated, setHasAnimated] = useState(false);
   
   // Data states
   const [heroData, setHeroData] = useState<HeroData | null>(null);
@@ -360,10 +361,24 @@ export default function DashboardPage() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          key="stats-projects"
+          initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.02,
+            y: -2,
+            transition: { duration: 0.2, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.1,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+            mass: 1
+          }}
+          onAnimationComplete={() => setHasAnimated(true)}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -377,10 +392,23 @@ export default function DashboardPage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          key="stats-skills"
+          initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.02,
+            y: -2,
+            transition: { duration: 0.2, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.2,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+            mass: 1
+          }}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -394,10 +422,23 @@ export default function DashboardPage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          key="stats-blog"
+          initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.02,
+            y: -2,
+            transition: { duration: 0.2, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.3,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+            mass: 1
+          }}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -411,10 +452,23 @@ export default function DashboardPage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          key="stats-messages"
+          initial={hasAnimated ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.02,
+            y: -2,
+            transition: { duration: 0.2, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.4,
+            duration: 0.6,
+            type: "spring",
+            stiffness: 100,
+            damping: 15,
+            mass: 1
+          }}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <div className="flex items-center justify-between">
             <div>
@@ -431,10 +485,23 @@ export default function DashboardPage() {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <motion.div
-          initial={{ opacity: 0, x: -20 }}
+          key="recent-projects"
+          initial={hasAnimated ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.01,
+            x: 2,
+            transition: { duration: 0.3, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.5,
+            duration: 0.7,
+            type: "spring",
+            stiffness: 80,
+            damping: 20,
+            mass: 1.2
+          }}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Projects</h3>
           <div className="space-y-3">
@@ -453,10 +520,23 @@ export default function DashboardPage() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, x: 20 }}
+          key="recent-messages"
+          initial={hasAnimated ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
+          whileHover={{
+            scale: 1.01,
+            x: -2,
+            transition: { duration: 0.3, ease: "easeOut" }
+          }}
+          transition={{
+            delay: 0.6,
+            duration: 0.7,
+            type: "spring",
+            stiffness: 80,
+            damping: 20,
+            mass: 1.2
+          }}
+          className="bg-white/20 backdrop-blur-sm border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20 cursor-pointer"
         >
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Messages</h3>
           <div className="space-y-3">
@@ -525,9 +605,10 @@ export default function DashboardPage() {
             {/* Main Content Area */}
             <div className="xl:col-span-2">
               <motion.div
+                key={`content-${activeTab}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, type: "tween" }}
                 className="bg-white/20 backdrop-blur-md border border-white/30 rounded-xl p-6 dark:bg-black/20 dark:border-white/20"
               >
                 {/* Content based on active tab */}
@@ -611,9 +692,10 @@ export default function DashboardPage() {
             {/* Widgets Sidebar */}
             <div className="xl:col-span-1">
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
+                key="dashboard-widgets"
+                initial={hasAnimated ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5, delay: 0.2, type: "tween" }}
               >
                 <DashboardWidgets />
               </motion.div>
