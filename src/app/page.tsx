@@ -62,17 +62,17 @@ export default function HomePage() {
     gsapAnimations.float(".floating-element-2", 20, 8);
     gsapAnimations.float(".floating-element-3", 12, 5);
     
-    // Parallax background effect
-    gsap.to(".hero-bg", {
-      yPercent: -20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero-section",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+    // Parallax background effect - disabled for full viewport coverage
+    // gsap.to(".hero-bg", {
+    //   yPercent: -20,
+    //   ease: "none",
+    //   scrollTrigger: {
+    //     trigger: ".hero-section",
+    //     start: "top bottom",
+    //     end: "bottom top",
+    //     scrub: true,
+    //   },
+    // });
   }, []);
 
   return (
@@ -103,9 +103,9 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden section-transition">
+      <section className="hero-section relative h-screen flex items-center justify-center overflow-hidden">
         {/* Hero-specific animated background */}
-        <div className="hero-bg absolute inset-0 mesh-bg opacity-15" />
+        <div className="hero-bg fixed inset-0 mesh-bg opacity-15 -z-10" />
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/8 via-purple-500/8 to-pink-500/8" />
         
         {/* Additional hero background elements */}
@@ -200,9 +200,7 @@ export default function HomePage() {
       </section>
 
       {/* About Section Preview */}
-      <section className="py-20 px-6 relative section-transition" id="about">
-        {/* Section transition overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent dark:via-black/5" />
+      <section className="py-20 px-6 relative" id="about">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -249,78 +247,63 @@ export default function HomePage() {
       </section>
 
       {/* Skills Section */}
-      <div className="relative section-transition">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/20 to-purple-50/20 dark:from-blue-950/5 dark:to-purple-950/5 gradient-transition" />
-        <SkillsSection />
-      </div>
+      <SkillsSection />
 
       {/* Projects Section */}
-      <div className="relative section-transition">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-50/20 to-pink-50/20 dark:from-purple-950/5 dark:to-pink-950/5 gradient-transition" />
-        <ProjectsSection />
-      </div>
+      <ProjectsSection />
 
       {/* Blog Section */}
-      <div className="relative section-transition">
-        <div className="absolute inset-0 bg-gradient-to-b from-pink-50/20 to-cyan-50/20 dark:from-pink-950/5 dark:to-cyan-950/5 gradient-transition" />
-        <BlogSection />
-      </div>
+      <BlogSection />
 
       {/* Contact Section */}
-      <div className="relative section-transition">
-        <div className="absolute inset-0 bg-gradient-to-b from-cyan-50/20 to-blue-50/20 dark:from-cyan-950/5 dark:to-blue-950/5 gradient-transition" />
-        <ContactSection />
-      </div>
+      <ContactSection />
 
       {/* Footer */}
-      <footer className="py-12 px-6 border-t relative section-transition">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-100/30 to-transparent dark:from-slate-900/30 gradient-transition" />
-        <div className="relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-              <div className="md:col-span-2">
-                <h3 className="text-2xl font-bold gradient-text mb-4">Portfolio</h3>
-                <p className="text-muted-foreground mb-4">
-                  Creating exceptional digital experiences with modern technologies and innovative design.
-                </p>
-                <div className="flex gap-4">
-                  <Button variant="ghost" size="icon">
-                    <Github className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Linkedin className="h-5 w-5" />
-                  </Button>
-                  <Button variant="ghost" size="icon">
-                    <Mail className="h-5 w-5" />
-                  </Button>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-4">Quick Links</h4>
-                <div className="space-y-2">
-                  <a href="#about" className="block text-muted-foreground hover:text-foreground transition-colors">About</a>
-                  <a href="#skills" className="block text-muted-foreground hover:text-foreground transition-colors">Skills</a>
-                  <a href="#projects" className="block text-muted-foreground hover:text-foreground transition-colors">Projects</a>
-                  <a href="#blog" className="block text-muted-foreground hover:text-foreground transition-colors">Blog</a>
-                  <a href="#contact" className="block text-muted-foreground hover:text-foreground transition-colors">Contact</a>
-                </div>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold mb-4">Services</h4>
-                <div className="space-y-2">
-                  <p className="text-muted-foreground">Web Development</p>
-                  <p className="text-muted-foreground">Mobile Apps</p>
-                  <p className="text-muted-foreground">UI/UX Design</p>
-                  <p className="text-muted-foreground">Consulting</p>
-                </div>
+      <footer className="py-12 px-6 border-t relative">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="md:col-span-2">
+              <h3 className="text-2xl font-bold gradient-text mb-4">Portfolio</h3>
+              <p className="text-muted-foreground mb-4">
+                Creating exceptional digital experiences with modern technologies and innovative design.
+              </p>
+              <div className="flex gap-4">
+                <Button variant="ghost" size="icon">
+                  <Github className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Linkedin className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Mail className="h-5 w-5" />
+                </Button>
               </div>
             </div>
             
-            <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
-              <p>&copy; 2024 Portfolio. All rights reserved.</p>
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <div className="space-y-2">
+                <a href="#about" className="block text-muted-foreground hover:text-foreground transition-colors">About</a>
+                <a href="#skills" className="block text-muted-foreground hover:text-foreground transition-colors">Skills</a>
+                <a href="#projects" className="block text-muted-foreground hover:text-foreground transition-colors">Projects</a>
+                <a href="#blog" className="block text-muted-foreground hover:text-foreground transition-colors">Blog</a>
+                <a href="#contact" className="block text-muted-foreground hover:text-foreground transition-colors">Contact</a>
+              </div>
             </div>
+            
+            <div>
+              <h4 className="font-semibold mb-4">Services</h4>
+              <div className="space-y-2">
+                <p className="text-muted-foreground">Web Development</p>
+                <p className="text-muted-foreground">Mobile Apps</p>
+                <p className="text-muted-foreground">UI/UX Design</p>
+                <p className="text-muted-foreground">Consulting</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t mt-8 pt-8 text-center text-muted-foreground">
+            <p>&copy; 2024 Portfolio. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -7,11 +7,11 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 0% / 0;
     --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
+    --card: 0 0% 100% / 0.05;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
+    --popover: 0 0% 100% / 0.1;
     --popover-foreground: 222.2 84% 4.9%;
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
@@ -37,11 +37,11 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 84% 4.9% / 0;
     --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 84% 4.9% / 0.05;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
+    --popover: 222.2 84% 4.9% / 0.1;
     --popover-foreground: 210 40% 98%;
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 84% 4.9%;
@@ -112,7 +112,12 @@
   }
 
   .glass-card {
-    @apply glass rounded-xl shadow-glass;
+    @apply glass rounded-xl;
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.02),
+      0 1px 4px rgba(0, 0, 0, 0.01),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .glass-card-dark {
@@ -187,12 +192,15 @@
     animation: gradient-flow 6s ease infinite;
   }
 
-  /* Enhanced navbar styles */
+  /* Enhanced navbar styles with improved shadows */
   .navbar-floating {
     backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.02),
+      0 1px 4px rgba(0, 0, 0, 0.01);
   }
 
   .navbar-default {
@@ -200,7 +208,29 @@
   }
 
   .navbar-transition {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Improved shadow utilities */
+  .shadow-soft {
+    box-shadow:
+      0 4px 16px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.02),
+      0 1px 4px rgba(0, 0, 0, 0.01);
+  }
+
+  .shadow-soft-lg {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.06),
+      0 4px 16px rgba(0, 0, 0, 0.03),
+      0 2px 8px rgba(0, 0, 0, 0.02);
+  }
+
+  .shadow-glass {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 2px 8px rgba(0, 0, 0, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   /* Smooth scroll behavior for navigation */
@@ -285,33 +315,6 @@
     }
   }
 
-  /* Section transition effects */
-  .section-transition {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .section-transition::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1));
-    pointer-events: none;
-  }
-
-  .section-transition::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.1));
-    pointer-events: none;
-  }
 
   /* Glassmorphism background effects */
   .glass-bg {
@@ -352,6 +355,37 @@
     50% {
       background-position: 100% 100%, 0% 100%, 100% 50%, 0% 50%, 100% 0%, 0% 0%, 100% 100%;
     }
+  }
+
+  /* Override any remaining solid backgrounds */
+  .bg-background {
+    background: transparent !important;
+  }
+
+  .bg-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .dark .bg-card {
+    background: rgba(0, 0, 0, 0.05) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Ensure all containers are transparent */
+  body {
+    background: transparent !important;
+  }
+
+  html {
+    background: transparent !important;
+  }
+
+  /* Fix any white containers that might appear */
+  .container, .max-w-6xl, .max-w-7xl, .max-w-4xl, .max-w-5xl {
+    background: transparent !important;
   }
 
   /* Button variants */

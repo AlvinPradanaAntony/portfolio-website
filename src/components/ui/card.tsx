@@ -8,7 +8,7 @@ const Card = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "rounded-xl border bg-card text-card-foreground shadow",
+      "rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-card-foreground shadow-soft",
       className
     )}
     {...props}
@@ -95,10 +95,10 @@ const InteractiveCard = React.forwardRef<
   }
 >(({ className, variant = "default", ...props }, ref) => {
   const variants = {
-    default: "rounded-xl border bg-card text-card-foreground shadow",
+    default: "rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-card-foreground shadow-soft",
     glass: "glass-card text-card-foreground transition-all duration-300 hover:bg-white/15",
-    hover: "rounded-xl border bg-card text-card-foreground shadow transition-all duration-300 hover:scale-105 hover:shadow-xl",
-    neon: "rounded-xl border border-blue-500/30 bg-card text-card-foreground shadow hover:border-blue-500 hover:shadow-neon transition-all duration-300"
+    hover: "rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-card-foreground shadow-soft transition-all duration-300 hover:scale-105 hover:shadow-soft-lg hover:bg-white/10",
+    neon: "rounded-xl border border-blue-500/30 bg-white/5 backdrop-blur-md text-card-foreground shadow-soft hover:border-blue-500 hover:shadow-neon transition-all duration-300"
   }
 
   return (
