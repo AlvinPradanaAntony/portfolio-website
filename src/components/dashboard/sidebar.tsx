@@ -49,8 +49,8 @@ export function Sidebar({
     <div>
       {/* Mobile Sidebar Overlay */}
       {isMobileOpen && (
-        <motion.div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
+        <motion.div
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 lg:hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -62,7 +62,7 @@ export function Sidebar({
       <motion.div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 lg:hidden",
-          "bg-white/30 backdrop-blur-xl dark:bg-black/20 shadow-2xl",
+          "bg-white/20 backdrop-blur-xl dark:bg-black/10 shadow-2xl",
           "transform transition-transform duration-300 ease-in-out",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
@@ -146,8 +146,8 @@ export function Sidebar({
       </motion.div>
 
       {/* Desktop Sidebar */}
-      <div 
-        className="fixed left-0 top-0 h-full z-40 transition-all duration-300 hidden lg:block bg-white/10 backdrop-blur-xl dark:bg-black/20" 
+      <div
+        className="fixed left-0 top-0 h-full z-40 transition-all duration-300 hidden lg:block bg-white/5 backdrop-blur-xl dark:bg-black/10"
         style={{ width: isCollapsed ? "64px" : "256px" }}
       >
         <div className={`h-full relative ${isCollapsed ? "p-3" : "p-6"}`}>
