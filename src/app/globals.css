@@ -100,7 +100,170 @@
   }
 }
 
+/* Dashboard UI Enhancements - Dark mode and responsive improvements */
+@layer utilities {
+  /* Improved dark mode text contrast */
+  .dark .text-gray-300 {
+    color: rgba(229, 231, 235, 0.85) !important; /* Slightly brighter gray for better readability */
+  }
+
+  .dark .text-gray-400 {
+    color: rgba(209, 213, 219, 0.8) !important; /* Improved contrast */
+  }
+
+  /* Enhanced glassmorphism for dark mode */
+  .dark .glass-card {
+    background-color: rgba(15, 23, 42, 0.25) !important; /* Darker but semi-transparent background */
+    border-color: rgba(255, 255, 255, 0.15) !important; /* More visible border */
+    backdrop-filter: blur(16px) !important; /* Stronger blur effect */
+  }
+
+  .dark .bg-white\/10 {
+    background-color: rgba(15, 23, 42, 0.25) !important;
+  }
+
+  .dark .bg-white\/20 {
+    background-color: rgba(15, 23, 42, 0.35) !important;
+  }
+
+  .dark .border-white\/20 {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+  }
+
+  .dark .border-white\/30 {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  /* Improved form inputs for dark mode */
+  .dark .form-input,
+  .dark input[type="text"],
+  .dark input[type="email"],
+  .dark input[type="password"],
+  .dark input[type="number"],
+  .dark input[type="tel"],
+  .dark input[type="url"],
+  .dark input[type="date"],
+  .dark input[type="datetime-local"],
+  .dark input[type="month"],
+  .dark input[type="search"],
+  .dark input[type="time"],
+  .dark input[type="week"],
+  .dark textarea,
+  .dark select {
+    background-color: rgba(15, 23, 42, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .dark .form-input:focus,
+  .dark input:focus,
+  .dark textarea:focus,
+  .dark select:focus {
+    background-color: rgba(15, 23, 42, 0.7) !important;
+    border-color: rgba(59, 130, 246, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25) !important;
+  }
+
+  .dark .form-input::placeholder,
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: rgba(156, 163, 175, 0.6) !important;
+  }
+
+  /* Improved dashboard cards for dark mode */
+  .dark .bg-black\/10 {
+    background-color: rgba(15, 23, 42, 0.3) !important;
+  }
+
+  .dark .bg-black\/20 {
+    background-color: rgba(15, 23, 42, 0.4) !important;
+  }
+
+  /* Enhanced gradient backgrounds for dark mode */
+  .dark .from-blue-950\/20 {
+    --tw-gradient-from: rgba(23, 37, 84, 0.3) !important;
+  }
+
+  .dark .to-purple-950\/20 {
+    --tw-gradient-to: rgba(59, 7, 100, 0.3) !important;
+  }
+
+  .dark .via-purple-950\/20 {
+    --tw-gradient-stops: var(--tw-gradient-from), rgba(59, 7, 100, 0.3), var(--tw-gradient-to) !important;
+  }
+
+  /* Improved shadow for dark mode containers */
+  .dark .shadow-lg,
+  .dark .shadow-xl {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+/* Responsive Dashboard Components */
 @layer components {
+  /* More responsive form controls that won't overflow their containers */
+  .responsive-form-control {
+    @apply w-full max-w-full px-3 py-2 border border-white/20 dark:border-white/15 rounded-lg 
+           bg-white/10 dark:bg-black/30 backdrop-blur-md focus:outline-none focus:ring-2 
+           focus:ring-primary/50 dark:focus:ring-primary/30 focus:border-transparent 
+           text-foreground dark:text-white placeholder-gray-500 dark:placeholder-gray-400
+           text-sm sm:text-base;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Better form layouts */
+  .form-group {
+    @apply flex flex-col space-y-1.5 w-full;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium mb-1.5 text-gray-900 dark:text-gray-200;
+  }
+
+  /* More responsive grid layouts */
+  .responsive-grid-1 {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  .responsive-grid-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6;
+  }
+
+  .responsive-grid-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6;
+  }
+
+  .responsive-grid-4 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6;
+  }
+
+  /* Responsive text for better readability on mobile */
+  .dashboard-title {
+    @apply text-2xl sm:text-3xl font-bold text-foreground;
+  }
+
+  .dashboard-subtitle {
+    @apply text-xl sm:text-2xl font-semibold text-foreground;
+  }
+
+  .dashboard-section-title {
+    @apply text-lg sm:text-xl font-semibold text-foreground;
+  }
+
+  /* Improved responsive padding/margins */
+  .dashboard-container {
+    @apply p-4 sm:p-6;
+  }
+
+  .dashboard-card {
+    @apply p-3 sm:p-4 md:p-6;
+  }
+
+  .dashboard-section {
+    @apply space-y-4 sm:space-y-6;
+  }
+
   /* Glassmorphism components */
   .glass {
     @apply backdrop-blur-md bg-white/10 border border-white/20;
@@ -268,6 +431,34 @@
   /* Enhanced Dark Mode Backgrounds */
   .dark .bg-gradient-to-br {
     background: linear-gradient(to bottom right, rgba(15, 23, 42, 0.8), rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.4)) !important;
+  }
+
+  /* Dashboard Sidebar Fix */
+  .dashboard-sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    height: 100vh !important;
+    z-index: 40 !important;
+  }
+
+  /* Ensure sidebar is visible on desktop */
+  @media (min-width: 1024px) {
+    .dashboard-sidebar {
+      display: block !important;
+    }
+  }
+
+  /* Mobile sidebar overlay */
+  @media (max-width: 1023px) {
+    .dashboard-sidebar {
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .dashboard-sidebar.mobile-open {
+      transform: translateX(0);
+    }
   }
 }
 
@@ -673,7 +864,6 @@
     }
   }
 
-
   /* Glassmorphism background effects */
   .glass-bg {
     backdrop-filter: blur(10px);
@@ -739,7 +929,8 @@
   }
 
   @keyframes mesh-shift {
-    0%, 100% {
+    0%,
+    100% {
       background-position: 0% 0%, 100% 0%, 0% 50%, 100% 50%, 0% 100%, 100% 100%, 0% 0%;
     }
     50% {
@@ -774,7 +965,11 @@
   }
 
   /* Fix any white containers that might appear */
-  .container, .max-w-6xl, .max-w-7xl, .max-w-4xl, .max-w-5xl {
+  .container,
+  .max-w-6xl,
+  .max-w-7xl,
+  .max-w-4xl,
+  .max-w-5xl {
     background: transparent !important;
   }
 
@@ -895,7 +1090,8 @@
 
 /* Custom animations for specific components */
 @keyframes float-slow {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -904,7 +1100,8 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
   }
   50% {
@@ -963,7 +1160,8 @@
 }
 
 @keyframes floating-particle {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) translateX(0px) rotate(0deg);
   }
   25% {
@@ -978,7 +1176,8 @@
 }
 
 @keyframes gradient-flow {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
