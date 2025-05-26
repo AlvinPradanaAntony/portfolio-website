@@ -22,10 +22,73 @@ export default function HomePage() {
     gsap.registerPlugin(ScrollTrigger);
 
     let isMouseInViewport = false;
+    let isMouseMoving = false;
+    let mouseTimeout: NodeJS.Timeout;
+    let floatingAnimations: gsap.core.Tween[] = [];
+    let mouseTrackingAnimations: gsap.core.Tween[] = [];
 
-    // Mouse tracking for 3D effects - only when mouse is in viewport
+    // Smart floating function that works with current position
+    const smartFloat = (selector: string, amplitude: number, duration: number) => {
+      const element = document.querySelector(selector);
+      if (!element) return null;
+
+      // Get current Y position
+      const currentY = gsap.getProperty(selector, "y") as number || 0;
+
+      return gsap.to(selector, {
+        y: currentY + amplitude,
+        duration: duration,
+        ease: "power2.inOut",
+        yoyo: true,
+        repeat: -1,
+        // Don't affect other transform properties
+      });
+    };
+
+    // Start floating animations
+    const startFloatingAnimations = () => {
+      // Kill existing floating animations first
+      floatingAnimations.forEach(anim => anim?.kill());
+      floatingAnimations = [];
+
+      // Start new floating animations from current positions
+      const elements = [
+        { selector: ".floating-element-4", amplitude: 12, duration: 3 },
+        { selector: ".floating-element-5", amplitude: 15, duration: 4 },
+        { selector: ".floating-element-6", amplitude: 10, duration: 2 },
+        { selector: ".floating-element-7", amplitude: 14, duration: 3.5 }
+      ];
+
+      elements.forEach(({ selector, amplitude, duration }) => {
+        const animation = smartFloat(selector, amplitude, duration);
+        if (animation) {
+          floatingAnimations.push(animation);
+        }
+      });
+    };
+
+    // Stop floating animations
+    const stopFloatingAnimations = () => {
+      floatingAnimations.forEach(anim => anim?.kill());
+      floatingAnimations = [];
+    };
+
+    // Mouse tracking for 3D effects
     const handleMouseMove = (e: MouseEvent) => {
       if (!isMouseInViewport) return;
+
+      // Mark mouse as moving
+      isMouseMoving = true;
+
+      // Clear previous timeout
+      if (mouseTimeout) {
+        clearTimeout(mouseTimeout);
+      }
+
+      // Stop floating animations when mouse starts moving
+      if (floatingAnimations.length > 0) {
+        stopFloatingAnimations();
+      }
 
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
@@ -33,58 +96,102 @@ export default function HomePage() {
       const xPercent = (clientX / innerWidth - 0.5) * 2;
       const yPercent = (clientY / innerHeight - 0.5) * 2;
 
-      // Apply smooth 3D transforms to floating elements
-      gsap.to(".floating-element-1", {
-        duration: 1.5,
-        rotationY: xPercent * 8,
-        rotationX: yPercent * 8,
-        x: xPercent * 15,
-        y: yPercent * 15,
-        ease: "power1.out",
+      // Kill previous mouse tracking animations
+      mouseTrackingAnimations.forEach(anim => anim?.kill());
+      mouseTrackingAnimations = [];
+
+      // Add floating cards to mouse tracking
+      const trackingConfigs = [
+        {
+          selector: ".floating-element-4",
+          rotationY: xPercent * 15,
+          rotationX: yPercent * 15,
+          x: xPercent * 25,
+          y: yPercent * 25,
+        },
+        {
+          selector: ".floating-element-5",
+          rotationY: xPercent * -20,
+          rotationX: yPercent * -20,
+          x: xPercent * -30,
+          y: yPercent * -30,
+        },
+        {
+          selector: ".floating-element-6",
+          rotationY: xPercent * 22,
+          rotationX: yPercent * 22,
+          x: xPercent * 35,
+          y: yPercent * 35,
+        },
+        {
+          selector: ".floating-element-7",
+          rotationY: xPercent * -12,
+          rotationX: yPercent * -12,
+          x: xPercent * -20,
+          y: yPercent * -20,
+        }
+      ];
+
+      trackingConfigs.forEach(config => {
+        const animation = gsap.to(config.selector, {
+          duration: 1.4,
+          rotationY: config.rotationY,
+          rotationX: config.rotationX,
+          x: config.x,
+          y: config.y,
+          ease: "power1.out",
+        });
+        mouseTrackingAnimations.push(animation);
       });
 
-      gsap.to(".floating-element-2", {
-        duration: 1.8,
-        rotationY: xPercent * -6,
-        rotationX: yPercent * -6,
-        x: xPercent * -12,
-        y: yPercent * -12,
-        ease: "power1.out",
-      });
-
-      gsap.to(".floating-element-3", {
-        duration: 1.2,
-        rotationY: xPercent * 10,
-        rotationX: yPercent * 10,
-        x: xPercent * 18,
-        y: yPercent * 18,
-        ease: "power1.out",
-      });
-
-      // Apply subtle parallax to hero content
-      gsap.to(".hero-content", {
-        duration: 2,
-        rotationY: xPercent * 1,
-        rotationX: yPercent * 1,
-        ease: "power1.out",
-      });
+      // Set timeout to restart floating animations after mouse stops
+      mouseTimeout = setTimeout(() => {
+        isMouseMoving = false;
+        if (isMouseInViewport && !isMouseMoving) {
+          // Wait for current mouse tracking animations to complete
+          setTimeout(() => {
+            startFloatingAnimations();
+          }, 100);
+        }
+      }, 1500); // 1.5 seconds after mouse stops moving
     };
 
-    // Mouse enter/leave viewport detection
+    // Mouse enter viewport
     const handleMouseEnter = () => {
       isMouseInViewport = true;
+      // Don't immediately stop floating - let mouse movement handle it
     };
 
+    // Mouse leave viewport
     const handleMouseLeave = () => {
       isMouseInViewport = false;
-      // Reset all transforms smoothly when mouse leaves
-      gsap.to([".floating-element-1", ".floating-element-2", ".floating-element-3", ".hero-content"], {
+      isMouseMoving = false;
+
+      // Clear timeout
+      if (mouseTimeout) {
+        clearTimeout(mouseTimeout);
+      }
+
+      // Kill all mouse tracking animations
+      mouseTrackingAnimations.forEach(anim => anim?.kill());
+      mouseTrackingAnimations = [];
+
+      // Smoothly reset all transforms and restart floating
+      const elements = [".floating-element-4", ".floating-element-5", ".floating-element-6", ".floating-element-7"];
+      
+      gsap.to(elements, {
         duration: 2,
         rotationY: 0,
         rotationX: 0,
         x: 0,
-        y: 0,
+        // Don't reset Y to avoid jump - floating will handle it
         ease: "power2.out",
+        onComplete: () => {
+          // Restart floating animations after reset
+          setTimeout(() => {
+            startFloatingAnimations();
+          }, 200);
+        }
       });
     };
 
@@ -93,7 +200,7 @@ export default function HomePage() {
     document.addEventListener("mouseenter", handleMouseEnter);
     document.addEventListener("mouseleave", handleMouseLeave);
 
-    // Initialize GSAP animations after component mounts with smoother timing
+    // Initialize GSAP animations after component mounts
     const tl = gsap.timeline({ delay: 0.2 });
 
     // Smooth hero content animation
@@ -103,16 +210,26 @@ export default function HomePage() {
       .fromTo(".hero-buttons", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, "-=0.4")
       .fromTo(".hero-social", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, "-=0.4");
 
-    // Smooth floating elements
-    gsapAnimations.float(".floating-element-1", 15, 6);
-    gsapAnimations.float(".floating-element-2", 20, 8);
-    gsapAnimations.float(".floating-element-3", 12, 5);
+    // Start initial floating animations after hero content loads
+    setTimeout(() => {
+      startFloatingAnimations();
+    }, 4000); // Start after hero animations complete
 
     // Cleanup function
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseenter", handleMouseEnter);
       document.removeEventListener("mouseleave", handleMouseLeave);
+      
+      // Clear timeout
+      if (mouseTimeout) {
+        clearTimeout(mouseTimeout);
+      }
+
+      // Kill all animations
+      floatingAnimations.forEach(anim => anim?.kill());
+      mouseTrackingAnimations.forEach(anim => anim?.kill());
+      
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
@@ -152,98 +269,79 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent dark:via-black/5" />
 
         {/* 3D Interactive Floating Elements */}
-        <motion.div
-          className="absolute top-20 left-20 floating-element-1"
-          initial={{ opacity: 0, scale: 0, rotateY: 180 }}
-          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
-          whileHover={{
-            scale: 1.2,
-            rotateY: 180,
-            transition: { duration: 0.6 },
-          }}
+        <motion.div className="absolute top-20 left-20 floating-element-1"
+          initial={{ opacity: 0, scale: 0}}
+          animate={{ opacity: 1, scale: 1}}
+          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
         >
-          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000" style={{ transform: "rotateX(15deg) rotateY(15deg)" }} />
+          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 opacity-30 blur-xl animate-pulse transform-gpu" />
         </motion.div>
 
-        <motion.div
-          className="absolute bottom-20 right-20 floating-element-2"
-          initial={{ opacity: 0, scale: 0, rotateX: 90 }}
-          animate={{ opacity: 1, scale: 1, rotateX: 0 }}
-          transition={{ duration: 1.5, delay: 1 }}
-          whileHover={{
-            scale: 1.3,
-            rotateX: 360,
-            transition: { duration: 0.8 },
-          }}
+        <motion.div className="absolute bottom-20 right-20 floating-element-2"
+          initial={{ opacity: 0, scale: 0}}
+          animate={{ opacity: 1, scale: 1}}
+          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
         >
-          <div className="w-32 h-32 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000" style={{ transform: "rotateX(-15deg) rotateZ(15deg)" }} />
+          <div className="w-32 h-32 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-30 blur-xl animate-pulse transform-gpu" />
         </motion.div>
 
-        <motion.div
-          className="absolute top-1/2 left-10 floating-element-3"
-          initial={{ opacity: 0, scale: 0, rotateZ: 180 }}
-          animate={{ opacity: 1, scale: 1, rotateZ: 0 }}
-          transition={{ duration: 1.5, delay: 1.5 }}
-          whileHover={{
-            scale: 1.1,
-            rotateZ: -180,
-            transition: { duration: 0.5 },
-          }}
+        <motion.div className="absolute top-1/2 left-10 floating-element-3"
+          initial={{ opacity: 0, scale: 0}}
+          animate={{ opacity: 1, scale: 1}}
+          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
         >
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-600 opacity-30 blur-xl animate-pulse transform-gpu perspective-1000" style={{ transform: "rotateY(-15deg) rotateX(15deg)" }} />
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-600 opacity-30 blur-xl animate-pulse transform-gpu" />
         </motion.div>
 
         {/* Interactive 3D Floating Cards */}
-        <motion.div className="absolute top-1/3 right-1/4 floating-element-1" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2, ease: "easeOut" }} style={{ transformStyle: "preserve-3d" }}>
+        <motion.div className="absolute top-1/3 right-1/4 floating-element-4" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2, ease: "easeOut" }} >
           <div className="w-24 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
             <div className="p-2 text-xs text-white/80 font-medium">React</div>
           </div>
         </motion.div>
 
-        <motion.div className="absolute bottom-1/3 left-1/4 floating-element-2" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2.3, ease: "easeOut" }} style={{ transformStyle: "preserve-3d" }}>
+        <motion.div className="absolute bottom-1/3 left-1/4 floating-element-5" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2.3, ease: "easeOut" }}>
           <div className="w-20 h-14 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
             <div className="p-2 text-xs text-white/80 font-medium">Next.js</div>
           </div>
         </motion.div>
 
-        {/* Additional 3D Interactive Particles */}
-        <motion.div className="absolute top-1/4 left-1/3 floating-element-3" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.6, ease: "easeOut" }}>
+        <motion.div className="absolute top-1/4 left-[30%] floating-element-6" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.6, ease: "easeOut" }}>
           <div className="w-12 h-12 bg-gradient-to-br from-indigo-400/25 to-cyan-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
             <div className="p-1 text-xs text-white/80 font-medium">TS</div>
           </div>
         </motion.div>
 
-        <motion.div className="absolute bottom-1/4 right-1/3 floating-element-1" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.9, ease: "easeOut" }}>
+        <motion.div className="absolute bottom-1/3 right-1/3 floating-element-7" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.9, ease: "easeOut" }}>
           <div className="w-14 h-10 bg-gradient-to-br from-emerald-400/25 to-teal-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
             <div className="p-1 text-xs text-white/80 font-medium">CSS</div>
           </div>
         </motion.div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-6">
           <div className="hero-content">
             {" "}
             {/* Main Heading with advanced animated typography */}
             <div className="mb-8">
               <h1 className="hero-title responsive-text-6xl font-bold mb-6 opacity-0 perspective-1000">
                 <motion.span className="gradient-text inline-block" initial={{ rotateX: 90, opacity: 0 }} animate={{ rotateX: 0, opacity: 1 }} transition={{ duration: 1.2, delay: 0.5, ease: "easeOut" }} style={{ transformOrigin: "center bottom" }}>
-                  Creative
+                  A Developer's
                 </motion.span>
                 <br />
                 <motion.span className="text-foreground inline-block" initial={{ rotateX: -90, opacity: 0 }} animate={{ rotateX: 0, opacity: 1 }} transition={{ duration: 1.2, delay: 0.8, ease: "easeOut" }} style={{ transformOrigin: "center top" }}>
-                  Developer
+                  Journey
                 </motion.span>
               </h1>
 
               {/* Animated typewriter effect */}
-              <motion.p className="hero-subtitle responsive-text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-4 opacity-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.5 }}>
+              <motion.p className="hero-subtitle responsive-text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed  opacity-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 1.5 }}>
                 <motion.span initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 2, delay: 1.8, ease: "easeInOut" }} className="inline-block overflow-hidden whitespace-nowrap border-r-2 border-primary/60" style={{ borderRight: "2px solid" }}>
                   Crafting exceptional digital experiences with modern technologies
                 </motion.span>
               </motion.p>
 
               {/* Simple description animation */}
-              <motion.div className="hero-description responsive-text-lg text-muted-foreground/80 max-w-2xl mx-auto leading-relaxed opacity-0" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}>
+              <motion.div className="hero-description responsive-text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed opacity-0" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 2.2, ease: "easeOut" }}>
                 Innovative design, and cutting-edge development practices.
               </motion.div>
             </div>

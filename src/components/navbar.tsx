@@ -89,7 +89,7 @@ export function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <motion.div className="flex-shrink-0" whileHover={{ scale: 1.05 }} transition={{ duration: 0.2, ease: "easeOut" }}>
-              <h1 className="text-2xl font-bold gradient-text cursor-pointer">Portfolio</h1>
+              <h1 className="text-2xl font-bold gradient-text cursor-pointer">Tonz.<span className="text-sm text-foreground/80">dev</span></h1>
             </motion.div>
 
             {/* Desktop Navigation - Center */}

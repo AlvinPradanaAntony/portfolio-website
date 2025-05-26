@@ -17,31 +17,31 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio | Modern Developer Portfolio",
-  description: "A modern, interactive portfolio showcasing cutting-edge web development skills with glassmorphism design and smooth animations.",
-  keywords: ["portfolio", "web developer", "react", "nextjs", "typescript", "modern design"],
-  authors: [{ name: "Your Name" }],
-  creator: "Your Name",
+  title: "SolutionCarft Dev | Workspace",
+  description: "Portofolio modern dan interaktif yang menampilkan keahlian software development dengan desain glassmorphism dan animasi yang halus.",
+  keywords: ["portofolio", "web developer", "react", "nextjs", "typescript", "desain modern"],
+  authors: [{ name: "Alvin Pradana Antony" }],
+  creator: "Alvin Pradana Antony",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://yourportfolio.com",
-    title: "Portfolio | Modern Developer Portfolio",
-    description: "A modern, interactive portfolio showcasing cutting-edge web development skills with glassmorphism design and smooth animations.",
-    siteName: "Portfolio",
+    title: "SolutionCarft Dev | Workspace",
+    description: "Portofolio modern dan interaktif yang menampilkan keahlian software development dengan desain glassmorphism dan animasi yang halus.",
+    siteName: "Portofolio",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Portfolio Preview",
+        alt: "Pratinjau Portofolio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio | Modern Developer Portfolio",
-    description: "A modern, interactive portfolio showcasing cutting-edge web development skills with glassmorphism design and smooth animations.",
+    title: "SolutionCarft Dev | Workspace",
+    description: "Portofolio modern dan interaktif yang menampilkan keahlian software development dengan desain glassmorphism dan animasi yang halus.",
     images: ["/og-image.jpg"],
     creator: "@yourusername",
   },
