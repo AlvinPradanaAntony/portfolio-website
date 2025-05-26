@@ -8,6 +8,7 @@ import { gsapAnimations } from "@/lib/animations";
 import { Navbar } from "@/components/navbar";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/card";
+import { FileCode2, Code2, TypeIcon, Palette } from "lucide-react";
 import { SkillsSection } from "@/components/portfolio/skills-section";
 import { ProjectsSection } from "@/components/portfolio/projects-section";
 import { BlogSection } from "@/components/portfolio/blog-section";
@@ -27,28 +28,10 @@ export default function HomePage() {
     let floatingAnimations: gsap.core.Tween[] = [];
     let mouseTrackingAnimations: gsap.core.Tween[] = [];
 
-    // Smart floating function that works with current position
-    const smartFloat = (selector: string, amplitude: number, duration: number) => {
-      const element = document.querySelector(selector);
-      if (!element) return null;
-
-      // Get current Y position
-      const currentY = gsap.getProperty(selector, "y") as number || 0;
-
-      return gsap.to(selector, {
-        y: currentY + amplitude,
-        duration: duration,
-        ease: "power2.inOut",
-        yoyo: true,
-        repeat: -1,
-        // Don't affect other transform properties
-      });
-    };
-
     // Start floating animations
     const startFloatingAnimations = () => {
       // Kill existing floating animations first
-      floatingAnimations.forEach(anim => anim?.kill());
+      floatingAnimations.forEach((anim) => anim?.kill());
       floatingAnimations = [];
 
       // Start new floating animations from current positions
@@ -56,11 +39,11 @@ export default function HomePage() {
         { selector: ".floating-element-4", amplitude: 12, duration: 3 },
         { selector: ".floating-element-5", amplitude: 15, duration: 4 },
         { selector: ".floating-element-6", amplitude: 10, duration: 2 },
-        { selector: ".floating-element-7", amplitude: 14, duration: 3.5 }
+        { selector: ".floating-element-7", amplitude: 14, duration: 3.5 },
       ];
 
       elements.forEach(({ selector, amplitude, duration }) => {
-        const animation = smartFloat(selector, amplitude, duration);
+        const animation = gsapAnimations.float2(selector, amplitude, duration);
         if (animation) {
           floatingAnimations.push(animation);
         }
@@ -69,7 +52,7 @@ export default function HomePage() {
 
     // Stop floating animations
     const stopFloatingAnimations = () => {
-      floatingAnimations.forEach(anim => anim?.kill());
+      floatingAnimations.forEach((anim) => anim?.kill());
       floatingAnimations = [];
     };
 
@@ -97,7 +80,7 @@ export default function HomePage() {
       const yPercent = (clientY / innerHeight - 0.5) * 2;
 
       // Kill previous mouse tracking animations
-      mouseTrackingAnimations.forEach(anim => anim?.kill());
+      mouseTrackingAnimations.forEach((anim) => anim?.kill());
       mouseTrackingAnimations = [];
 
       // Add floating cards to mouse tracking
@@ -129,10 +112,10 @@ export default function HomePage() {
           rotationX: yPercent * -12,
           x: xPercent * -20,
           y: yPercent * -20,
-        }
+        },
       ];
 
-      trackingConfigs.forEach(config => {
+      trackingConfigs.forEach((config) => {
         const animation = gsap.to(config.selector, {
           duration: 1.4,
           rotationY: config.rotationY,
@@ -173,12 +156,12 @@ export default function HomePage() {
       }
 
       // Kill all mouse tracking animations
-      mouseTrackingAnimations.forEach(anim => anim?.kill());
+      mouseTrackingAnimations.forEach((anim) => anim?.kill());
       mouseTrackingAnimations = [];
 
       // Smoothly reset all transforms and restart floating
       const elements = [".floating-element-4", ".floating-element-5", ".floating-element-6", ".floating-element-7"];
-      
+
       gsap.to(elements, {
         duration: 2,
         rotationY: 0,
@@ -191,7 +174,7 @@ export default function HomePage() {
           setTimeout(() => {
             startFloatingAnimations();
           }, 200);
-        }
+        },
       });
     };
 
@@ -220,16 +203,16 @@ export default function HomePage() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseenter", handleMouseEnter);
       document.removeEventListener("mouseleave", handleMouseLeave);
-      
+
       // Clear timeout
       if (mouseTimeout) {
         clearTimeout(mouseTimeout);
       }
 
       // Kill all animations
-      floatingAnimations.forEach(anim => anim?.kill());
-      mouseTrackingAnimations.forEach(anim => anim?.kill());
-      
+      floatingAnimations.forEach((anim) => anim?.kill());
+      mouseTrackingAnimations.forEach((anim) => anim?.kill());
+
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
@@ -239,7 +222,7 @@ export default function HomePage() {
       {/* Global Background with Enhanced Glassmorphism */}
       <div className="fixed inset-0 -z-10">
         {/* Primary gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-950/20 dark:via-purple-950/20 dark:to-pink-950/20 gradient-transition" />
+        <div className="absolute  inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-blue-950/20 dark:via-purple-950/20 dark:to-pink-950/20 gradient-transition" />
 
         {/* Enhanced mesh background */}
         <div className="absolute inset-0 mesh-bg-enhanced opacity-60" />
@@ -249,10 +232,101 @@ export default function HomePage() {
         <div className="absolute top-1/4 right-0 w-80 h-80 bg-gradient-to-br from-purple-400/25 to-pink-400/25 rounded-full blur-3xl animated-bg-orb" />
         <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-gradient-to-br from-green-400/20 to-blue-400/20 rounded-full blur-3xl animated-bg-orb" />
         <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-gradient-to-br from-yellow-400/15 to-orange-400/15 rounded-full blur-3xl animated-bg-orb" />
+        {/* <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl animated-bg-orb" />
+        <div className="absolute bottom-1/3 right-1/3 w-40 h-40 bg-gradient-to-br from-pink-400/15 to-rose-400/15 rounded-full blur-2xl animated-bg-orb" /> */}
 
-        {/* Additional floating particles */}
-        <div className="absolute top-1/3 left-1/4 w-32 h-32 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-2xl animated-bg-orb" />
-        <div className="absolute bottom-1/3 right-1/3 w-40 h-40 bg-gradient-to-br from-pink-400/15 to-rose-400/15 rounded-full blur-2xl animated-bg-orb" />
+        {/* Global Floating Elements*/}
+        <motion.div
+          className="absolute floating-element-1 -bottom-36 -left-36"
+          initial={{
+            opacity: 0,
+            scale: 0,
+          }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            x: [
+              0, // Start at -bottom-18 -left-18 (CSS position)
+              "50vw", // Bottom-center (center minus half element width)
+              "100vw", // Bottom-right (viewport width minus half element to stay half cut)
+              "100vw", // Top-right (same x position)
+              "50vw", // Top-center (center minus half element width)
+              0, // Top-left (back to start x)
+              0, // Back to start position
+            ],
+            y: [
+              0, // Start at -bottom-18 -left-18 (CSS position)
+              0, // Bottom-center (same level)
+              0, // Bottom-right (same level)
+              "-100vh", // Top-right (negative viewport height plus half element to stay half cut)
+              "-100vh", // Top-center (same level)
+              "-100vh", // Top-left (same level)
+              0, // Back to start position
+            ],
+          }}
+          transition={{
+            opacity: { duration: 1.5, delay: 2, ease: "easeOut" },
+            scale: { duration: 1.5, delay: 2, ease: "easeOut" },
+            x: {
+              duration: 120,
+              delay: 3,
+              ease: "linear",
+              repeat: Infinity,
+            },
+            y: {
+              duration: 120,
+              delay: 3,
+              ease: "linear",
+              repeat: Infinity,
+            },
+          }}
+        >
+          <div className="w-72 h-72 rounded-full bg-gradient-to-r from-blue-400/90 to-purple-600/60 opacity-30 blur-2xl animate-pulse transform-gpu" />
+        </motion.div>
+        <motion.div
+          className="absolute floating-element-2 -top-36 -right-36"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{
+            opacity: 1,
+            scale: 1,
+            x: [
+              0, // Start at -top-16 -right-16 (CSS position)
+              "-50vw", // Bottom-center (center minus half element width)
+              "-100vw", // Bottom-right (viewport width minus half element to stay half cut)
+              "-100vw", // Top-right (same x position)
+              "-50vw", // Top-center (center minus half element width)
+              0, // Bottom-right (viewport width minus element width for half cut)
+              0, // Back to start position (Top-right)
+            ],
+            y: [
+              0, // Start at -top-16 -right-16 (CSS position)
+              0, // Top-center (same level)
+              0, // Top-left (same level)
+              "100vh", // Top-right (negative viewport height plus half element to stay half cut)
+              "100vh", // Top-center (same level)
+              "100vh", // Top-left (same level)
+              0, // Back to start position
+            ],
+          }}
+          transition={{
+            opacity: { duration: 1.5, delay: 2, ease: "easeOut" },
+            scale: { duration: 1.5, delay: 2, ease: "easeOut" },
+            x: {
+              duration: 120, // Slightly different duration for variety
+              delay: 3, // Start after element 1
+              ease: "linear",
+              repeat: Infinity,
+            },
+            y: {
+              duration: 120,
+              delay: 3,
+              ease: "linear",
+              repeat: Infinity,
+            },
+          }}
+        >
+          <div className="w-72 h-72 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-30 blur-2xl animate-pulse transform-gpu" />
+        </motion.div>
 
         {/* Glassmorphism overlay */}
         <div className="absolute inset-0 glass-bg" />
@@ -264,60 +338,29 @@ export default function HomePage() {
         {/* Hero-specific animated background */}
         <div className="hero-bg fixed inset-0 mesh-bg opacity-15 -z-10" />
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/8 via-purple-500/8 to-pink-500/8" />
-
         {/* Additional hero background elements */}
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent dark:via-black/5" />
-
-        {/* 3D Interactive Floating Elements */}
-        <motion.div className="absolute top-20 left-20 floating-element-1"
-          initial={{ opacity: 0, scale: 0}}
-          animate={{ opacity: 1, scale: 1}}
-          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
-        >
-          <div className="w-20 h-20 rounded-full bg-gradient-to-r from-blue-400 to-purple-600 opacity-30 blur-xl animate-pulse transform-gpu" />
-        </motion.div>
-
-        <motion.div className="absolute bottom-20 right-20 floating-element-2"
-          initial={{ opacity: 0, scale: 0}}
-          animate={{ opacity: 1, scale: 1}}
-          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
-        >
-          <div className="w-32 h-32 rounded-full bg-gradient-to-r from-pink-400 to-red-600 opacity-30 blur-xl animate-pulse transform-gpu" />
-        </motion.div>
-
-        <motion.div className="absolute top-1/2 left-10 floating-element-3"
-          initial={{ opacity: 0, scale: 0}}
-          animate={{ opacity: 1, scale: 1}}
-          transition={{ duration: 1.5, delay: 2, ease: "easeOut" }}
-        >
-          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-green-400 to-blue-600 opacity-30 blur-xl animate-pulse transform-gpu" />
-        </motion.div>
-
         {/* Interactive 3D Floating Cards */}
-        <motion.div className="absolute top-1/3 right-1/4 floating-element-4" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2, ease: "easeOut" }} >
-          <div className="w-24 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
-            <div className="p-2 text-xs text-white/80 font-medium">React</div>
+        <motion.div className="absolute top-1/3 right-1/4 floating-element-4" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2, ease: "easeOut" }}>
+          <div className="w-24 h-16 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu flex items-center justify-center">
+            <FileCode2 className="w-8 h-8 text-white/80" />
           </div>
         </motion.div>
-
         <motion.div className="absolute bottom-1/3 left-1/4 floating-element-5" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 2.3, ease: "easeOut" }}>
-          <div className="w-20 h-14 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu">
-            <div className="p-2 text-xs text-white/80 font-medium">Next.js</div>
+          <div className="w-20 h-14 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg backdrop-blur-sm border border-white/20 shadow-2xl transform-gpu flex items-center justify-center">
+            <Code2 className="w-6 h-6 text-white/80" />
           </div>
         </motion.div>
-
         <motion.div className="absolute top-1/4 left-[30%] floating-element-6" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.6, ease: "easeOut" }}>
-          <div className="w-12 h-12 bg-gradient-to-br from-indigo-400/25 to-cyan-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
-            <div className="p-1 text-xs text-white/80 font-medium">TS</div>
+          <div className="w-12 h-12 bg-gradient-to-br from-indigo-400/25 to-cyan-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu flex items-center justify-center">
+            <TypeIcon className="w-4 h-4 text-white/80" />
           </div>
         </motion.div>
-
-        <motion.div className="absolute bottom-1/3 right-1/3 floating-element-7" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.9, ease: "easeOut" }}>
-          <div className="w-14 h-10 bg-gradient-to-br from-emerald-400/25 to-teal-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu">
-            <div className="p-1 text-xs text-white/80 font-medium">CSS</div>
+        <motion.div className="absolute bottom-1/4 right-[30%] floating-element-7" initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 2.9, ease: "easeOut" }}>
+          <div className="w-14 h-10 bg-gradient-to-br from-emerald-400/25 to-teal-500/25 rounded-lg backdrop-blur-sm border border-white/20 shadow-xl transform-gpu flex items-center justify-center">
+            <Palette className="w-5 h-5 text-white/80" />
           </div>
         </motion.div>
-
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-6">
           <div className="hero-content">
             {" "}
@@ -372,7 +415,6 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-
         {/* Scroll Indicator with improved animation */}
         <motion.div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 2 }} whileHover={{ scale: 1.1 }} onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}>
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }} className="w-6 h-10 border-2 border-muted-foreground/40 rounded-full flex justify-center hover:border-primary/60 transition-colors duration-300">

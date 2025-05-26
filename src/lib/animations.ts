@@ -10,52 +10,28 @@ if (typeof window !== "undefined") {
 export const gsapAnimations = {
   // Fade animations
   fadeIn: (element: string | Element, duration = 1, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0 },
-      { opacity: 1, duration, delay, ease: "power2.out" }
-    );
+    return gsap.fromTo(element, { opacity: 0 }, { opacity: 1, duration, delay, ease: "power2.out" });
   },
 
   fadeUp: (element: string | Element, duration = 1, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration, delay, ease: "power2.out" }
-    );
+    return gsap.fromTo(element, { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration, delay, ease: "power2.out" });
   },
 
   fadeDown: (element: string | Element, duration = 1, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration, delay, ease: "power2.out" }
-    );
+    return gsap.fromTo(element, { opacity: 0, y: -50 }, { opacity: 1, y: 0, duration, delay, ease: "power2.out" });
   },
 
   fadeLeft: (element: string | Element, duration = 1, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0, x: -50 },
-      { opacity: 1, x: 0, duration, delay, ease: "power2.out" }
-    );
+    return gsap.fromTo(element, { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration, delay, ease: "power2.out" });
   },
 
   fadeRight: (element: string | Element, duration = 1, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0, x: 50 },
-      { opacity: 1, x: 0, duration, delay, ease: "power2.out" }
-    );
+    return gsap.fromTo(element, { opacity: 0, x: 50 }, { opacity: 1, x: 0, duration, delay, ease: "power2.out" });
   },
 
   // Scale animations
   scaleIn: (element: string | Element, duration = 0.8, delay = 0) => {
-    return gsap.fromTo(
-      element,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 1, scale: 1, duration, delay, ease: "back.out(1.7)" }
-    );
+    return gsap.fromTo(element, { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration, delay, ease: "back.out(1.7)" });
   },
 
   scaleUp: (element: string | Element, duration = 0.3) => {
@@ -107,7 +83,7 @@ export const gsapAnimations = {
   typeWriter: (element: string | Element, text: string, duration = 2) => {
     const tl = gsap.timeline();
     const chars = text.split("");
-    
+
     tl.set(element, { text: "" });
     chars.forEach((char, index) => {
       tl.to(element, {
@@ -116,7 +92,7 @@ export const gsapAnimations = {
         ease: "none",
       });
     });
-    
+
     return tl;
   },
 
@@ -168,6 +144,18 @@ export const gsapAnimations = {
   float: (element: string | Element, distance = 20, duration = 3) => {
     return gsap.to(element, {
       y: -distance,
+      duration,
+      ease: "power2.inOut",
+      yoyo: true,
+      repeat: -1,
+    });
+  },
+
+  float2: (element: string | Element, distance = 20, duration = 3) => {
+    // Get current Y position
+    const currentY = (gsap.getProperty(element, "y") as number) || 0;
+    return gsap.to(element, {
+      y: currentY + distance,
       duration,
       ease: "power2.inOut",
       yoyo: true,
@@ -230,52 +218,52 @@ export const motionVariants = {
 
   fadeUp: {
     hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   },
 
   fadeDown: {
     hidden: { opacity: 0, y: -50 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   },
 
   fadeLeft: {
     hidden: { opacity: 0, x: -50 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   },
 
   fadeRight: {
     hidden: { opacity: 0, x: 50 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      transition: { duration: 0.6, ease: "easeOut" } 
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.6, ease: "easeOut" },
     },
   },
 
   // Scale variants
   scaleIn: {
     hidden: { opacity: 0, scale: 0.8 },
-    visible: { 
-      opacity: 1, 
-      scale: 1, 
-      transition: { 
-        duration: 0.6, 
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.6,
         ease: "easeOut",
         type: "spring",
         stiffness: 100,
-      } 
+      },
     },
   },
 
@@ -301,16 +289,16 @@ export const motionVariants = {
   // Card variants
   card: {
     hidden: { opacity: 0, y: 50, rotateX: -15 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
+    visible: {
+      opacity: 1,
+      y: 0,
       rotateX: 0,
-      transition: { 
-        duration: 0.8, 
+      transition: {
+        duration: 0.8,
         ease: "easeOut",
         type: "spring",
         stiffness: 100,
-      } 
+      },
     },
     hover: {
       y: -10,
@@ -322,13 +310,13 @@ export const motionVariants = {
   // Text variants
   text: {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.6,
         ease: "easeOut",
-      }
+      },
     },
   },
 
@@ -345,13 +333,13 @@ export const motionVariants = {
   // Letter animation
   letter: {
     hidden: { opacity: 0, y: 50 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { 
+      transition: {
         duration: 0.5,
         ease: "easeOut",
-      }
+      },
     },
   },
 };
@@ -368,7 +356,7 @@ export const createScrollTrigger = (element: string | Element, animation: gsap.c
 };
 
 export const killScrollTriggers = () => {
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 };
 
 export const refreshScrollTrigger = () => {
